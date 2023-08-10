@@ -14,7 +14,6 @@ import {
 import { hhmmss } from './utils';
 
 const circleRadius = DEVICE_WIDTH / 2;
-const timerMaxWidth = DEVICE_WIDTH;
 const playing = true
 const totalMs = 30000
 let msRemaining = 30000
