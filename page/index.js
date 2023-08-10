@@ -1,4 +1,3 @@
-import { gettext } from 'i18n'
 import {
   DEVICE_HEIGHT,
   DEVICE_WIDTH,
@@ -32,7 +31,7 @@ const vibrate = hmSensor.createSensor(hmSensor.id.VIBRATE)
 Page({
   build() {
     const timerDisplay = hmUI.createWidget(hmUI.widget.TEXT, TEXT_STYLE)
-    // racetrack is under the bgCircle bc we can't apply alpha to arc
+    // ARC_BG is under the bgCircle bc we can't apply alpha to arc
     hmUI.createWidget(hmUI.widget.ARC, ARC_BG)
     const countDisplay = hmUI.createWidget(hmUI.widget.TEXT, {
       text: 0,
@@ -77,14 +76,12 @@ Page({
       color: 0xffffff,
       line_width: 30,
     })
-    timer_w = timerMaxWidth
     playInterval = timer.createTimer(
       0,
       tickTime,
       function (option) {
         const isLeft = cycleCount % 2 === 0
         if (playing) {
-          timer_w = timer_w - 1
           msRemaining = msRemaining - tickTime
           currentEpoch = currentEpoch + tickTime
           const epochDiff = currentEpoch - initEpoch
@@ -92,10 +89,8 @@ Page({
           elapsedDisplay = hhmmss(secondsElapsed)
         }
         if (msRemaining <= 0) {
-          timer_w = timerMaxWidth
           msRemaining = totalMs
           cycleCount++
-          console.log('next cycle')
           option.triggerVibrate()
         }
         if (isLeft) {
