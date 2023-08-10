@@ -1,26 +1,51 @@
-import { gettext } from 'i18n'
-// import { Vibrator, VIBRATOR_SCENE_DURATION } from '@zos/sensor'
-import { DEVICE_HEIGHT, DEVICE_WIDTH, TEXT_STYLE, RED } from './index.style'
-// import { setStatusBarVisible } from '@zos/ui'
+import { DEVICE_WIDTH } from './index.style'
 
-// const vibe = new Vibrator()
+let clicked = 1
+let vibrateOn = false;
 
 const vibrate = hmSensor.createSensor(hmSensor.id.VIBRATE)
 
 function doVibrate() {
   logger.log('vibe click')
-  vibrate.stop()
-  vibrate.scene = 25
+  // vibrate.stop()
+  vibrate.scene = 28
   vibrate.start()
+}
 
+const buttonProps = {
+  x: px(10),
+  y: px(170),
+  w: DEVICE_WIDTH/2,
+  h: DEVICE_WIDTH/2,
 }
 
 Page({
   build() {
-    const red = hmUI.createWidget(hmUI.widget.BUTTON, {
-      ...RED,
-      click_func: () => doVibrate()
+    const vibrateButton = hmUI.createWidget(hmUI.widget.BUTTON, {
+      ...buttonProps,
+      press_color: 0xFFA493,
+      normal_color: 0xFC6C51,
+      text: clicked,
+      radius: px(10),
+      click_func: () => {
+        clicked++
+        this.pulseVibrate()
+        return boof()
+      },
     })
+
+    function boof() {
+      vibrateButton.setProperty(hmUI.prop.MORE, {
+        ...buttonProps,
+        text: clicked
+      })
+
+    }
+  },
+  pulseVibrate() {
+    vibrate.stop()
+    vibrate.scene = 25
+    vibrate.start()
   },
   onInit() {
     logger.debug('page onInit invoked')
