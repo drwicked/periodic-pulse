@@ -10,10 +10,12 @@ import {
   RIGHT_CHIRAL_STYLE,
   CHIRAL_TEXT_PROPS,
   OFFSET,
+  CIRCLE_RADIUS,
 } from './index.style'
 import { hhmmss } from './utils';
 
-const circleRadius = DEVICE_WIDTH / 2;
+const setText = (widget, text) => widget.setProperty(hmUI.prop.MORE, { text })
+
 const playing = true
 const totalMs = 30000
 let msRemaining = 30000
@@ -29,6 +31,7 @@ const vibrate = hmSensor.createSensor(hmSensor.id.VIBRATE)
 
 Page({
   build() {
+    console.log('build invoked')
     const timerDisplay = hmUI.createWidget(hmUI.widget.TEXT, TEXT_STYLE)
     // ARC_BG is under the bgCircle bc we can't apply alpha to arc
     hmUI.createWidget(hmUI.widget.ARC, ARC_BG)
@@ -67,9 +70,9 @@ Page({
 
     const arc = hmUI.createWidget(hmUI.widget.ARC, {
       x: 10,
-      y: px(((DEVICE_HEIGHT / 2) - circleRadius) + 10), // idk
-      w: (circleRadius * 2) - px(OFFSET),
-      h: (circleRadius * 2) - px(OFFSET),
+      y: px(((DEVICE_HEIGHT / 2) - CIRCLE_RADIUS) + 10), // idk
+      w: (CIRCLE_RADIUS * 2) - px(OFFSET),
+      h: (CIRCLE_RADIUS * 2) - px(OFFSET),
       start_angle: -95,
       end_angle: 0,
       color: 0xffffff,
@@ -93,28 +96,20 @@ Page({
           option.triggerVibrate()
         }
         if (isLeft) {
-          leftText.setProperty(hmUI.prop.MORE, {
-            text: 'L',
-          })
+          setText(leftText, 'L');
           chiralCircleLeft.setProperty(hmUI.prop.MORE, LEFT_CHIRAL_STYLE)
-          rightText.setProperty(hmUI.prop.MORE, {
-            text: '',
-          })
+          setText(rightText, '')
           chiralCircleRight.setProperty(hmUI.prop.MORE, {
             ...RIGHT_CHIRAL_STYLE,
             alpha: 0,
           })
         } else {
-          leftText.setProperty(hmUI.prop.MORE, {
-            text: '',
-          })
+          setText(leftText, '');
           chiralCircleLeft.setProperty(hmUI.prop.MORE, {
             ...LEFT_CHIRAL_STYLE,
             alpha: 0,
           })
-          rightText.setProperty(hmUI.prop.MORE, {
-            text: 'R',
-          })
+          setText(rightText, 'R')
           chiralCircleRight.setProperty(hmUI.prop.MORE, RIGHT_CHIRAL_STYLE)
 
         }
@@ -133,19 +128,15 @@ Page({
           ...BG_CIRCLE_STYLE,
           color: parseInt(responsiveColor, 16),
         })
-        countDisplay.setProperty(hmUI.prop.MORE, {
-          text: (colorIdx + 1),
-        })
-        timerDisplay.setProperty(hmUI.prop.MORE, {
-          text: elapsedDisplay,
-        })
+        setText(timerDisplay, elapsedDisplay)
+        setText(countDisplay, (colorIdx + 1))
       },
       { hour: 0, minute: 15, second: 30, triggerVibrate: this.pulseVibrate }
     )
 
     hmUI.setStatusBarVisible(false)
     hmSetting.setBrightScreen(2000)
-    pauseDropWristScreenOff({ duration: 120000 })
+    // hmSetting.pauseDropWristScreenOff({ duration: 120000 })
   },
   pulseVibrate() {
     vibrate.stop()
@@ -153,12 +144,14 @@ Page({
     vibrate.start()
   },
   onInit() {
-    logger.debug('page onInit invoked')
+    console.log('page onInit invoked')
   },
   onDestroy() {
     try {
-      timer.stopTimer(playInterval)
-    } catch {}
+      timer && timer.stopTimer(playInterval)
+    } catch {
+      console.error('timer err')
+    }
     vibrate && vibrate.stop()
   }
 })
