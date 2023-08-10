@@ -7,7 +7,7 @@ export const OFFSET = 20
 
 export const TIMER_TEXT = {
   text: '',
-  x: px(26),
+  x: px(24),
   y: px(8),
   w: DEVICE_WIDTH - px(24) * 2,
   h: px(100),
