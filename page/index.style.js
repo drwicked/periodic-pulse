@@ -5,14 +5,14 @@ export const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = hmSetting.getDevic
 export const CIRCLE_RADIUS = DEVICE_WIDTH / 2;
 export const OFFSET = 20
 
-export const TEXT_STYLE = {
+export const TIMER_TEXT = {
   text: '',
-  x: px(42),
-  y: px(28),
-  w: DEVICE_WIDTH - px(42) * 2,
+  x: px(26),
+  y: px(8),
+  w: DEVICE_WIDTH - px(24) * 2,
   h: px(100),
   color: 0x777777,
-  text_size: px(40),
+  text_size: px(56),
   align_h: hmUI.align.CENTER_H,
   text_style: hmUI.text_style.WRAP,
 }

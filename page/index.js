@@ -1,7 +1,7 @@
 import {
   DEVICE_HEIGHT,
   DEVICE_WIDTH,
-  TEXT_STYLE,
+  TIMER_TEXT,
   BG_CIRCLE_STYLE,
   CHIRAL_CIRCLE_STYLE,
   COLOR_GRADIENT_ARRAY,
@@ -32,7 +32,7 @@ const vibrate = hmSensor.createSensor(hmSensor.id.VIBRATE)
 Page({
   build() {
     console.log('build invoked')
-    const timerDisplay = hmUI.createWidget(hmUI.widget.TEXT, TEXT_STYLE)
+    const timerDisplay = hmUI.createWidget(hmUI.widget.TEXT, TIMER_TEXT)
     // ARC_BG is under the bgCircle bc we can't apply alpha to arc
     hmUI.createWidget(hmUI.widget.ARC, ARC_BG)
     const countDisplay = hmUI.createWidget(hmUI.widget.TEXT, {
@@ -129,7 +129,7 @@ Page({
           color: parseInt(responsiveColor, 16),
         })
         setText(timerDisplay, elapsedDisplay)
-        setText(countDisplay, (colorIdx + 1))
+        setText(countDisplay, colorIdx)
       },
       { hour: 0, minute: 15, second: 30, triggerVibrate: this.pulseVibrate }
     )
